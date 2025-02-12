@@ -180,5 +180,5 @@ app.delete("/:id", async (req, res) => {
 
 // Server listen
 app.listen(port, () => {
-  console.log(`PassOP server listening on http://localhost:${port}`);
+  console.log(`server listening on http://localhost:${port}`);
 });
