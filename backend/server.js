@@ -9,7 +9,7 @@ dotenv.config();
 const { ObjectId } = require("mongodb");
 
 const ENCRYPTION_KEY =
-  process.env.ENCRYPTION_KEY || "your-32-character-secret-key-key";
+  process.env.ENCRYPTION_KEY;
 const IV_LENGTH = 16;
 
 function encrypt(text) {
