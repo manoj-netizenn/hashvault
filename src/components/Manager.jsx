@@ -20,14 +20,14 @@ const Manager = () => {
 
   const getPasswords = async () => {
     try {
-      const response = await fetch("http://localhost:3000/");
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}`);
       const data = await response.json();
 
       setPasswordArray(
         data.map((pwd) => ({
           ...pwd,
           id: pwd._id,
-          decryptedPassword: pwd.password || "", // Provide empty string as fallback
+          decryptedPassword: pwd.password || "", 
         }))
       );
     } catch (error) {
@@ -36,8 +36,6 @@ const Manager = () => {
     }
   };
 
-  // function to add favicon before a website
-  // domain format examples = google.com || dev.to || youtube.com
   const getFavicon = (domain) => {
     return `https://www.google.com/s2/favicons?domain=${domain}&sz=25`;
   };
@@ -69,23 +67,6 @@ const Manager = () => {
         : "icons/eyecross.png";
   };
 
-  const generatePassword = () => {
-    const lowerCase = "abcdefghijklmnopqrstuvwxyz";
-    const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
-    const symbols = "!@#$%^&*()_+[]{}|;:,.<>?";
-
-    const allChars = lowerCase + upperCase + numbers + symbols;
-    let generatedPassword = "";
-
-    for (let i = 0; i < 12; i++) {
-      const randomChar = allChars[Math.floor(Math.random() * allChars.length)];
-      generatedPassword += randomChar;
-    }
-    // Set the generated password into the form's password field
-    setForm((prevForm) => ({ ...prevForm, password: generatedPassword }));
-  };
-
   /*const checkURL = async (url) => {
     try {
       const response = await axios.get(url);
@@ -102,6 +83,22 @@ const Manager = () => {
   
   checkURL(form.site);
 */
+  const generatePassword = () => {
+    const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+    const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+[]{}|;:,.<>?";
+
+    const allChars = lowerCase + upperCase + numbers + symbols;
+    let generatedPassword = "";
+
+    for (let i = 0; i < 12; i++) {
+      const randomChar = allChars[Math.floor(Math.random() * allChars.length)];
+      generatedPassword += randomChar;
+    }
+    setForm((prevForm) => ({ ...prevForm, password: generatedPassword }));
+  };
+
   const validate = async (url) => {
     const ok = await axios.get(url);
     if (ok.status === 200) {
@@ -129,9 +126,9 @@ const Manager = () => {
     ) {
       try {
         if (form.id) {
-          // Handle update logic here if needed
+          
         } else {
-          const response = await fetch("http://localhost:3000/", {
+          const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -146,8 +143,6 @@ const Manager = () => {
           }
 
           const data = await response.json();
-
-          // Refresh the password list after saving
           await getPasswords();
         }
 
@@ -180,18 +175,17 @@ const Manager = () => {
     if (confirmDelete) {
       try {
         // Send DELETE request to the server
-        const response = await fetch(`http://localhost:3000/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/${id}`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
         });
 
-        // Check if the response is OK (status in the range 200-299)
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || "Failed to delete password");
         }
 
-        // Update local state only after successful deletion
+        // Remove the deleted password from the state
         setPasswordArray(passwordArray.filter((item) => item._id !== id));
 
         // Show success message
