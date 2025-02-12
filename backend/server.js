@@ -8,8 +8,7 @@ const crypto = require("crypto");
 dotenv.config();
 const { ObjectId } = require("mongodb");
 
-const ENCRYPTION_KEY =
-  process.env.ENCRYPTION_KEY || "your-32-character-secret-key-key";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const IV_LENGTH = 16;
 
 function encrypt(text) {
@@ -40,7 +39,7 @@ function decrypt(text) {
     return decrypted.toString();
   } catch (error) {
     console.error("Decryption error:", error);
-    return ""; 
+    return "";
   }
 }
 
@@ -54,13 +53,12 @@ client
   })
   .catch((error) => {
     console.error("Database connection failed:", error);
-    process.exit(1); 
+    process.exit(1);
   });
 
-// App & Database
 const dbName = process.env.DB_NAME;
 const app = express();
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -95,7 +93,7 @@ app.get("/:id", async (req, res) => {
   }
 });
 
-// Get all the passwords
+// get all the passwords
 app.get("/", async (req, res) => {
   try {
     const db = client.db(dbName);
@@ -117,7 +115,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-// Save a password
+// save a password
 app.post("/", async (req, res) => {
   try {
     const { site, username, password } = req.body;
@@ -134,8 +132,8 @@ app.post("/", async (req, res) => {
     const result = await collection.insertOne({
       site,
       username,
-      hashedPassword, 
-      displayPassword, 
+      hashedPassword,
+      displayPassword,
       createdAt: new Date(),
     });
     res.status(201).json({ success: true, result });
@@ -178,7 +176,6 @@ app.delete("/:id", async (req, res) => {
   }
 });
 
-// Server listen
 app.listen(port, () => {
   console.log(`server listening on http://localhost:${port}`);
 });
