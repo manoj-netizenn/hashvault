@@ -8,12 +8,7 @@ const crypto = require("crypto");
 dotenv.config();
 const { ObjectId } = require("mongodb");
 
-<<<<<<< HEAD
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
-=======
-const ENCRYPTION_KEY =
-  process.env.ENCRYPTION_KEY;
->>>>>>> c15eebf7992e212eaf0ae1c42a615716467000bb
 const IV_LENGTH = 16;
 
 function encrypt(text) {
