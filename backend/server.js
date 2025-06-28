@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const { MongoClient } = require("mongodb");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-//const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const crypto = require('crypto');
 dotenv.config();
 const { ObjectId } = require("mongodb");
