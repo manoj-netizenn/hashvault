@@ -57,7 +57,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use(cors());
+
+app.use(cors({
+  origin:"https://hashvault.vercel.app",
+  methods:["GET", "POST", "DELETE", "PUT"],
+  credentials:true,
+}));
 
 const errorHandler = (error, req, res, next) => {
   console.error("Error:", error);
